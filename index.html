@@ -1,775 +1,486 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate Converter | DeepSeek Tools</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="description" content="All File Converter - Free online PDF tools to merge, split, compress, convert PDF to Word, Excel, PPT, JPG, PNG and more.">
+    <meta name="keywords" content="pdf converter, pdf tools, merge pdf, split pdf, compress pdf, pdf to word, pdf to jpg, online pdf tools">
+    <meta name="robots" content="index, follow">
+    <title>All File Converter - Free Online PDF Tools</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --text-color: #212529;
-            --primary-color: #0d6efd;
-            --secondary-color: #6c757d;
-            --border-color: #dee2e6;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #121212;
-            --text-color: #f8f9fa;
-            --border-color: #495057;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            transition: all 0.3s;
-            background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            background-blend-mode: overlay;
-            background-color: rgba(248, 249, 250, 0.9);
-        }
-
-        [data-theme="dark"] body {
-            background-color: rgba(18, 18, 18, 0.9);
-        }
-
-        .main-container {
-            background-color: rgba(var(--bg-color), 0.95);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .converter-card {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background-color: rgba(var(--bg-color), 0.98);
-            transition: all 0.3s;
-        }
-
-        .converter-card:hover {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            transform: translateY(-3px);
-        }
-
-        .drop-zone {
-            border: 2px dashed var(--primary-color);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(13, 110, 253, 0.05);
-            position: relative;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .drop-zone.dragover {
-            background-color: rgba(13, 110, 253, 0.15);
-            border-color: var(--primary-color);
-        }
-
-        .drop-zone i {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .file-info {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            word-break: break-all;
-        }
-
-        .progress-container {
-            margin-top: 1rem;
-            width: 100%;
-        }
-
-        .preview-container {
-            margin-top: 1rem;
-            max-width: 100%;
-            text-align: center;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .compression-options {
-            margin-top: 1rem;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            background-color: rgba(var(--bg-color), 0.8);
-        }
-
-        .slider-container {
-            margin: 1rem 0;
-        }
-
-        .slider-value {
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .theme-toggle {
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            opacity: 0.8;
-        }
-
-        .nav-tabs .nav-link.active {
-            font-weight: bold;
-            border-bottom: 3px solid var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .nav-tabs .nav-link {
-            color: var(--secondary-color);
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 1rem;
-                margin-top: 1rem;
-            }
-            
-            .drop-zone {
-                padding: 1.5rem;
-                min-height: 150px;
-            }
-        }
-    </style>
+    <!-- Structured data for rich snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "All File Converter",
+      "url": "https://www.dvs-tools.com/",
+      "description": "Free online PDF tools to merge, split, compress, convert PDF to various formats and more.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 <body>
-    <!-- Main Container -->
-    <div class="container main-container">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Ultimate Converter</h1>
-            <button class="btn btn-outline-secondary theme-toggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i> <span class="d-none d-md-inline">Toggle Theme</span>
-            </button>
-        </div>
-        
-        <!-- Navigation Tabs -->
-        <ul class="nav nav-tabs mb-4" id="converterTabs">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#file">File Converter</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#compress">File Compressor</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#media">Media Converter</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#currency">Currency</a>
-            </li>
-        </ul>
-
-        <div class="tab-content">
-            <!-- File Converter Tab -->
-            <div class="tab-pane fade show active" id="file">
-                <div class="converter-card">
-                    <h5 class="mb-3"><i class="fas fa-file-alt me-2"></i>File Converter</h5>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Conversion Type</label>
-                            <select class="form-select" id="fileFormat">
-                                <option value="pdf-word">PDF to Word</option>
-                                <option value="word-pdf">Word to PDF</option>
-                                <option value="jpg-png">JPG to PNG</option>
-                                <option value="png-jpg">PNG to JPG</option>
-                                <option value="image-pdf">Image to PDF</option>
-                                <option value="pdf-image">PDF to Image</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Quality</label>
-                            <select class="form-select" id="fileQuality">
-                                <option value="high">High</option>
-                                <option value="medium" selected>Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="drop-zone" id="fileDropZone">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h5>Drag & Drop Files Here</h5>
-                        <p class="text-muted">or click to browse files</p>
-                        <input type="file" id="fileInput" class="d-none">
-                        <div class="file-info" id="fileInfo"></div>
-                        <div class="preview-container" id="filePreview"></div>
-                    </div>
-                    
-                    <div class="progress-container" id="fileProgress" style="display: none;">
-                        <div class="progress" style="height: 10px;">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-                        </div>
-                        <small class="text-muted mt-1" id="fileProgressText">Starting conversion...</small>
-                    </div>
-                    
-                    <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-primary" id="convertFileBtn" disabled onclick="convertFile()">
-                            <i class="fas fa-exchange-alt me-2"></i>Convert
-                        </button>
-                        <button class="btn btn-success" id="downloadFileBtn" style="display: none;" onclick="downloadFile()">
-                            <i class="fas fa-download me-2"></i>Download
-                        </button>
-                    </div>
-                    
-                    <div class="alert alert-danger mt-3" id="fileError" style="display: none;"></div>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="All File Converter Logo">
+                        <span>All File Converter</span>
+                    </a>
                 </div>
-            </div>
-
-            <!-- File Compressor Tab -->
-            <div class="tab-pane fade" id="compress">
-                <div class="converter-card">
-                    <h5 class="mb-3"><i class="fas fa-compress-alt me-2"></i>File Compressor</h5>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Compression Type</label>
-                            <select class="form-select" id="compressType">
-                                <option value="image">Image Compressor</option>
-                                <option value="pdf">PDF Compressor</option>
-                                <option value="video">Video Compressor</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="drop-zone" id="compressDropZone">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h5>Drag & Drop Files Here</h5>
-                        <p class="text-muted">or click to browse files</p>
-                        <input type="file" id="compressInput" class="d-none">
-                        <div class="file-info" id="compressInfo"></div>
-                        <div class="preview-container" id="compressPreview"></div>
-                    </div>
-                    
-                    <div class="compression-options" id="imageOptions" style="display: none;">
-                        <h6><i class="fas fa-image me-2"></i>Image Compression Options</h6>
-                        <div class="slider-container">
-                            <label for="imageQuality" class="form-label">Quality: <span class="slider-value" id="imageQualityValue">70</span>%</label>
-                            <input type="range" class="form-range" min="10" max="100" value="70" id="imageQuality">
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="resizeImage" checked>
-                            <label class="form-check-label" for="resizeImage">
-                                Resize large images
-                            </label>
-                        </div>
-                        <div class="row mt-2" id="resizeOptions">
-                            <div class="col-md-6">
-                                <label class="form-label">Max Width (px)</label>
-                                <input type="number" class="form-control" id="maxWidth" value="1200" min="100">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Max Height (px)</label>
-                                <input type="number" class="form-control" id="maxHeight" value="1200" min="100">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="progress-container" id="compressProgress" style="display: none;">
-                        <div class="progress" style="height: 10px;">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-                        </div>
-                        <small class="text-muted mt-1" id="compressProgressText">Starting compression...</small>
-                    </div>
-                    
-                    <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-primary" id="compressBtn" disabled onclick="compressFile()">
-                            <i class="fas fa-compress-alt me-2"></i>Compress
-                        </button>
-                        <button class="btn btn-success" id="downloadCompressedBtn" style="display: none;" onclick="downloadCompressedFile()">
-                            <i class="fas fa-download me-2"></i>Download
-                        </button>
-                    </div>
-                    
-                    <div class="alert alert-info mt-3" id="compressionInfo" style="display: none;"></div>
-                    <div class="alert alert-danger mt-3" id="compressError" style="display: none;"></div>
-                </div>
-            </div>
-
-            <!-- Currency Converter Tab -->
-            <div class="tab-pane fade" id="currency">
-                <div class="converter-card">
-                    <h5 class="mb-3"><i class="fas fa-money-bill-wave me-2"></i>Currency Converter</h5>
-                    <div class="row g-3">
-                        <div class="col-md-5">
-                            <label class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="amount" placeholder="Enter amount" value="1" min="0" step="0.01">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">From</label>
-                            <select class="form-select" id="fromCurrency">
-                                <option value="USD">USD - US Dollar</option>
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="GBP">GBP - British Pound</option>
-                                <option value="JPY">JPY - Japanese Yen</option>
-                                <option value="CAD">CAD - Canadian Dollar</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">To</label>
-                            <select class="form-select" id="toCurrency">
-                                <option value="EUR">EUR - Euro</option>
-                                <option value="USD">USD - US Dollar</option>
-                                <option value="GBP">GBP - British Pound</option>
-                                <option value="JPY">JPY - Japanese Yen</option>
-                                <option value="CAD">CAD - Canadian Dollar</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary mt-3 w-100" id="convertCurrencyBtn" onclick="convertCurrency()">
-                        <i class="fas fa-exchange-alt me-2"></i>Convert
+                <nav class="main-nav">
+                    <button class="menu-toggle" aria-label="Toggle Menu">
+                        <span class="hamburger"></span>
                     </button>
-                    
-                    <div class="alert alert-info mt-3" id="currencyResult" style="display: none;">
-                        <div id="currencyResultText"></div>
-                        <small class="text-muted" id="currencyRateInfo"></small>
-                        <small class="text-muted d-block" id="currencyUpdateTime"></small>
+                    <ul class="nav-links">
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="#pdf-tools">PDF Tools</a></li>
+                        <li><a href="#convert-from-pdf">Convert from PDF</a></li>
+                        <li><a href="#convert-to-pdf">Convert to PDF</a></li>
+                        <li><a href="#edit-pdf">Edit PDF</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Transform Your Documents with Ease</h1>
+                    <p>Free online PDF tools to convert, compress, merge, split and modify your PDF files effortlessly.</p>
+                    <a href="#tools" class="btn btn-primary">Get Started</a>
+                </div>
+                <div class="hero-image">
+                    <img src="images/hero-illustration.svg" alt="PDF Tools Illustration">
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Space -->
+        <div class="ad-container">
+            <div class="container">
+                <!-- Google AdSense -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                    data-ad-slot="XXXXXXXXXX"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+
+        <!-- All Tools Section -->
+        <section id="tools" class="tools-section">
+            <div class="container">
+                <h2 class="section-title">Our PDF Tools</h2>
+                <p class="section-description">All the tools you need to work with PDF files, 100% free and online.</p>
+                
+                <div class="tools-categories">
+                    <!-- PDF Tools -->
+                    <div id="pdf-tools" class="tool-category">
+                        <h3>Essential PDF Tools</h3>
+                        <div class="tools-grid">
+                            <a href="merge-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-object-group"></i>
+                                </div>
+                                <h4>Merge PDF</h4>
+                                <p>Combine multiple PDFs into one document</p>
+                            </a>
+                            <a href="split-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-cut"></i>
+                                </div>
+                                <h4>Split PDF</h4>
+                                <p>Separate one PDF into multiple files</p>
+                            </a>
+                            <a href="compress-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-compress-alt"></i>
+                                </div>
+                                <h4>Compress PDF</h4>
+                                <p>Reduce the size of your PDF files</p>
+                            </a>
+                        </div>
                     </div>
                     
-                    <div class="alert alert-danger mt-3" id="currencyError" style="display: none;"></div>
+                    <!-- Convert from PDF -->
+                    <div id="convert-from-pdf" class="tool-category">
+                        <h3>Convert from PDF</h3>
+                        <div class="tools-grid">
+                            <a href="pdf-to-word.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-word"></i>
+                                </div>
+                                <h4>PDF to Word</h4>
+                                <p>Convert PDF to editable Word document</p>
+                            </a>
+                            <a href="pdf-to-excel.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-excel"></i>
+                                </div>
+                                <h4>PDF to Excel</h4>
+                                <p>Extract tables from PDF to Excel</p>
+                            </a>
+                            <a href="pdf-to-ppt.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                </div>
+                                <h4>PDF to PowerPoint</h4>
+                                <p>Convert PDF to PowerPoint presentations</p>
+                            </a>
+                            <a href="pdf-to-jpg.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-image"></i>
+                                </div>
+                                <h4>PDF to JPG</h4>
+                                <p>Convert PDF pages to JPG images</p>
+                            </a>
+                            <a href="pdf-to-png.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                                <h4>PDF to PNG</h4>
+                                <p>Convert PDF pages to PNG images</p>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Convert to PDF -->
+                    <div id="convert-to-pdf" class="tool-category">
+                        <h3>Convert to PDF</h3>
+                        <div class="tools-grid">
+                            <a href="word-to-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h4>Word to PDF</h4>
+                                <p>Convert Word documents to PDF format</p>
+                            </a>
+                            <a href="excel-to-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h4>Excel to PDF</h4>
+                                <p>Convert Excel spreadsheets to PDF</p>
+                            </a>
+                            <a href="ppt-to-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h4>PowerPoint to PDF</h4>
+                                <p>Convert PowerPoint presentations to PDF</p>
+                            </a>
+                            <a href="jpg-to-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h4>JPG to PDF</h4>
+                                <p>Convert JPG images to PDF format</p>
+                            </a>
+                            <a href="png-to-pdf.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <h4>PNG to PDF</h4>
+                                <p>Convert PNG images to PDF format</p>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Edit PDF -->
+                    <div id="edit-pdf" class="tool-category">
+                        <h3>Edit PDF</h3>
+                        <div class="tools-grid">
+                            <a href="pdf-rotate.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-sync"></i>
+                                </div>
+                                <h4>Rotate PDF</h4>
+                                <p>Rotate PDF pages to correct orientation</p>
+                            </a>
+                            <a href="pdf-watermark.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <h4>Watermark PDF</h4>
+                                <p>Add text or image watermarks to PDFs</p>
+                            </a>
+                            <a href="pdf-organize.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-sort"></i>
+                                </div>
+                                <h4>Organize PDF</h4>
+                                <p>Rearrange, delete, or add PDF pages</p>
+                            </a>
+                            <a href="pdf-sign.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-signature"></i>
+                                </div>
+                                <h4>Sign PDF</h4>
+                                <p>Add electronic signatures to your PDFs</p>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- PDF Security -->
+                    <div id="pdf-security" class="tool-category">
+                        <h3>PDF Security</h3>
+                        <div class="tools-grid">
+                            <a href="pdf-protect.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <h4>Protect PDF</h4>
+                                <p>Add password protection to your PDFs</p>
+                            </a>
+                            <a href="pdf-unlock.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-unlock"></i>
+                                </div>
+                                <h4>Unlock PDF</h4>
+                                <p>Remove password protection from PDFs</p>
+                            </a>
+                            <a href="pdf-repair.html" class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-wrench"></i>
+                                </div>
+                                <h4>Repair PDF</h4>
+                                <p>Fix corrupted PDF files and recover data</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose All File Converter?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Fast Processing</h3>
+                        <p>Convert your files in seconds with our optimized tools</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Secure & Private</h3>
+                        <p>Your files are automatically deleted after processing</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <h3>Cloud-Based</h3>
+                        <p>No downloads or installations required</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>100% Free</h3>
+                        <p>All tools are completely free to use</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <h3>Upload Your File</h3>
+                        <p>Select the file you want to convert or modify</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>Process</h3>
+                        <p>Our system will process your file quickly</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Download Result</h3>
+                        <p>Get your converted or modified file instantly</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Space -->
+        <div class="ad-container">
+            <div class="container">
+                <!-- Google AdSense -->
+                <ins class="adsbygoogle"
+                    style="display:block"
+                    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                    data-ad-slot="XXXXXXXXXX"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <section class="faq" id="about">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is All File Converter really free?
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, All File Converter is 100% free to use. All our PDF tools are available without any hidden fees or subscriptions.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How secure are my files?
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Your privacy is our priority. All files are automatically deleted from our servers after processing. We use secure HTTPS connections to transfer your files, and we never share your data with third parties.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Is there a file size limit?
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>The maximum file size is 100MB for free users. For larger files, consider splitting them into smaller parts or compressing them first.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can I use All File Converter on my mobile device?
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Absolutely! All File Converter is fully responsive and works perfectly on all devices, including smartphones and tablets.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How accurate are the conversions?
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Our conversion engines are designed to maintain the highest possible accuracy. However, complex formatting in the original document might occasionally be affected during conversion.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <h2>Start Converting Your Files Now</h2>
+                <p>Choose from our wide range of PDF tools and get your work done in seconds!</p>
+                <a href="#tools" class="btn btn-primary">Get Started</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-white.png" alt="All File Converter Logo">
+                    <p>© 2025 All File Converter. All rights reserved. DVS-Tools</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>PDF Tools</h4>
+                        <ul>
+                            <li><a href="merge-pdf.html">Merge PDF</a></li>
+                            <li><a href="split-pdf.html">Split PDF</a></li>
+                            <li><a href="compress-pdf.html">Compress PDF</a></li>
+                            <li><a href="pdf-organize.html">Organize PDF</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Convert from PDF</h4>
+                        <ul>
+                            <li><a href="pdf-to-word.html">PDF to Word</a></li>
+                            <li><a href="pdf-to-excel.html">PDF to Excel</a></li>
+                            <li><a href="pdf-to-ppt.html">PDF to PowerPoint</a></li>
+                            <li><a href="pdf-to-jpg.html">PDF to JPG</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Convert to PDF</h4>
+                        <ul>
+                            <li><a href="word-to-pdf.html">Word to PDF</a></li>
+                            <li><a href="excel-to-pdf.html">Excel to PDF</a></li>
+                            <li><a href="ppt-to-pdf.html">PowerPoint to PDF</a></li>
+                            <li><a href="jpg-to-pdf.html">JPG to PDF</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="privacy.html">Privacy Policy</a></li>
+                            <li><a href="terms.html">Terms of Service</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Powered by DVS-Tools</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Theme Toggle
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            const icon = document.querySelector('.theme-toggle i');
-            icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-        }
-
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark' || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            document.querySelector('.theme-toggle i').className = 'fas fa-sun';
-        }
-
-        // File Converter Functions
-        const fileDropZone = document.getElementById('fileDropZone');
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('fileInfo');
-        const filePreview = document.getElementById('filePreview');
-        let selectedFile = null;
-        let convertedFile = null;
-
-        // Set up drag and drop for file converter
-        setupDropZone(fileDropZone, fileInput, (file) => {
-            selectedFile = file;
-            fileInfo.innerHTML = `
-                <strong>Selected file:</strong> ${file.name}<br>
-                <strong>Size:</strong> ${formatFileSize(file.size)}
-            `;
-            
-            // Show preview if it's an image
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    filePreview.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                filePreview.innerHTML = '';
-            }
-            
-            document.getElementById('convertFileBtn').disabled = false;
-            validateFile(file, 'file');
-        });
-
-        // File conversion function
-        function convertFile() {
-            if (!selectedFile) return;
-            
-            const progressBar = document.getElementById('fileProgress').querySelector('.progress-bar');
-            const progressText = document.getElementById('fileProgressText');
-            const convertBtn = document.getElementById('convertFileBtn');
-            
-            document.getElementById('fileProgress').style.display = 'block';
-            convertBtn.disabled = true;
-            convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Converting...';
-            document.getElementById('fileError').style.display = 'none';
-            
-            // Simulate conversion process
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = getProgressMessage(progress);
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        // Simulate successful conversion
-                        convertedFile = new Blob([selectedFile], { type: 'application/octet-stream' });
-                        
-                        document.getElementById('fileProgress').style.display = 'none';
-                        document.getElementById('downloadFileBtn').style.display = 'block';
-                        convertBtn.style.display = 'none';
-                        
-                        // Show success message
-                        const fileError = document.getElementById('fileError');
-                        fileError.textContent = 'File converted successfully!';
-                        fileError.classList.remove('alert-danger');
-                        fileError.classList.add('alert-success');
-                        fileError.style.display = 'block';
-                    }, 500);
-                }
-            }, 300);
-        }
-
-        function downloadFile() {
-            if (!convertedFile) return;
-            
-            const a = document.createElement('a');
-            const url = URL.createObjectURL(convertedFile);
-            const conversionType = document.getElementById('fileFormat').value;
-            let extension = '';
-            
-            switch(conversionType) {
-                case 'pdf-word': extension = 'docx'; break;
-                case 'word-pdf': extension = 'pdf'; break;
-                case 'jpg-png': extension = 'png'; break;
-                case 'png-jpg': extension = 'jpg'; break;
-                case 'image-pdf': extension = 'pdf'; break;
-                case 'pdf-image': extension = 'jpg'; break;
-                default: extension = 'converted';
-            }
-            
-            a.href = url;
-            a.download = `converted_file.${extension}`;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 0);
-        }
-
-        // File Compressor Functions
-        const compressDropZone = document.getElementById('compressDropZone');
-        const compressInput = document.getElementById('compressInput');
-        const compressInfo = document.getElementById('compressInfo');
-        const compressPreview = document.getElementById('compressPreview');
-        let selectedCompressFile = null;
-        let compressedFile = null;
-
-        // Set up drag and drop for file compressor
-        setupDropZone(compressDropZone, compressInput, (file) => {
-            selectedCompressFile = file;
-            compressInfo.innerHTML = `
-                <strong>Selected file:</strong> ${file.name}<br>
-                <strong>Size:</strong> ${formatFileSize(file.size)}
-            `;
-            
-            // Show preview if it's an image
-            if (file.type.startsWith('image/')) {
-                document.getElementById('imageOptions').style.display = 'block';
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    compressPreview.innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Preview">`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                compressPreview.innerHTML = '';
-                document.getElementById('imageOptions').style.display = 'none';
-            }
-            
-            document.getElementById('compressBtn').disabled = false;
-            validateFile(file, 'compress');
-        });
-
-        // Compression quality slider
-        document.getElementById('imageQuality').addEventListener('input', function() {
-            document.getElementById('imageQualityValue').textContent = this.value;
-        });
-
-        // Resize checkbox toggle
-        document.getElementById('resizeImage').addEventListener('change', function() {
-            document.getElementById('resizeOptions').style.display = this.checked ? 'flex' : 'none';
-        });
-
-        // File compression function
-        function compressFile() {
-            if (!selectedCompressFile) return;
-            
-            const progressBar = document.getElementById('compressProgress').querySelector('.progress-bar');
-            const progressText = document.getElementById('compressProgressText');
-            const compressBtn = document.getElementById('compressBtn');
-            
-            document.getElementById('compressProgress').style.display = 'block';
-            compressBtn.disabled = true;
-            compressBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Compressing...';
-            document.getElementById('compressError').style.display = 'none';
-            
-            // Simulate compression process
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                progressBar.style.width = `${progress}%`;
-                progressText.textContent = getProgressMessage(progress);
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        // Simulate successful compression
-                        compressedFile = new Blob([selectedCompressFile], { type: selectedCompressFile.type });
-                        
-                        document.getElementById('compressProgress').style.display = 'none';
-                        document.getElementById('downloadCompressedBtn').style.display = 'block';
-                        compressBtn.style.display = 'none';
-                        
-                        // Show compression info
-                        const originalSize = selectedCompressFile.size;
-                        const compressedSize = Math.round(originalSize * 0.7); // Simulate 30% reduction
-                        const reduction = Math.round((1 - (compressedSize / originalSize)) * 100);
-                        
-                        const compressionInfo = document.getElementById('compressionInfo');
-                        compressionInfo.innerHTML = `
-                            <strong>Compression successful!</strong><br>
-                            Original size: ${formatFileSize(originalSize)}<br>
-                            Compressed size: ${formatFileSize(compressedSize)}<br>
-                            Size reduced by: ${reduction}%
-                        `;
-                        compressionInfo.style.display = 'block';
-                    }, 500);
-                }
-            }, 300);
-        }
-
-        function downloadCompressedFile() {
-            if (!compressedFile) return;
-            
-            const a = document.createElement('a');
-            const url = URL.createObjectURL(compressedFile);
-            const fileName = selectedCompressFile.name.replace(/\.[^/.]+$/, "") + '_compressed' + 
-                            selectedCompressFile.name.substring(selectedCompressFile.name.lastIndexOf('.'));
-            
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 0);
-        }
-
-        // Currency Converter
-        async function convertCurrency() {
-            const amount = document.getElementById('amount').value;
-            const from = document.getElementById('fromCurrency').value;
-            const to = document.getElementById('toCurrency').value;
-            const convertBtn = document.getElementById('convertCurrencyBtn');
-            
-            if (!amount || isNaN(amount) || amount <= 0) {
-                document.getElementById('currencyError').textContent = 'Please enter a valid amount';
-                document.getElementById('currencyError').style.display = 'block';
-                return;
-            }
-            
-            convertBtn.disabled = true;
-            convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Converting...';
-            document.getElementById('currencyError').style.display = 'none';
-            
-            try {
-                // In a real implementation, replace with actual API call
-                const mockRates = {
-                    USD: { EUR: 0.85, GBP: 0.73, JPY: 110.25, CAD: 1.25 },
-                    EUR: { USD: 1.18, GBP: 0.86, JPY: 129.75, CAD: 1.47 },
-                    GBP: { USD: 1.37, EUR: 1.16, JPY: 151.20, CAD: 1.71 },
-                    JPY: { USD: 0.0091, EUR: 0.0077, GBP: 0.0066, CAD: 0.011 },
-                    CAD: { USD: 0.80, EUR: 0.68, GBP: 0.58, JPY: 90.91 }
-                };
-                
-                // Simulate API delay
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                let result, rate;
-                if (from === to) {
-                    result = amount;
-                    rate = 1;
-                } else if (mockRates[from] && mockRates[from][to]) {
-                    rate = mockRates[from][to];
-                    result = amount * rate;
-                } else {
-                    throw new Error('Currency conversion not available');
-                }
-                
-                document.getElementById('currencyResultText').innerHTML = `
-                    <strong>${amount} ${from}</strong> = <strong>${result.toFixed(2)} ${to}</strong>
-                `;
-                
-                if (from !== to) {
-                    document.getElementById('currencyRateInfo').textContent = 
-                        `1 ${from} = ${rate.toFixed(6)} ${to}`;
-                }
-                
-                document.getElementById('currencyUpdateTime').textContent = 
-                    `Last updated: ${new Date().toLocaleString()}`;
-                
-                document.getElementById('currencyResult').style.display = 'block';
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-exchange-alt me-2"></i>Convert';
-            } catch (error) {
-                document.getElementById('currencyError').textContent = 
-                    'Error converting currency. Please try again later.';
-                document.getElementById('currencyError').style.display = 'block';
-                convertBtn.disabled = false;
-                convertBtn.innerHTML = '<i class="fas fa-exchange-alt me-2"></i>Convert';
-            }
-        }
-
-        // Helper Functions
-        function setupDropZone(dropZone, inputElement, callback) {
-            // Click to select files
-            dropZone.addEventListener('click', () => inputElement.click());
-            
-            // Handle file selection
-            inputElement.addEventListener('change', function() {
-                if (this.files && this.files.length > 0) {
-                    callback(this.files[0]);
-                }
-            });
-            
-            // Drag and drop events
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => {
-                    dropZone.classList.add('dragover');
-                }, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, () => {
-                    dropZone.classList.remove('dragover');
-                }, false);
-            });
-            
-            dropZone.addEventListener('drop', function(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                if (files.length > 0) {
-                    callback(files[0]);
-                }
-            }, false);
-        }
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
-        }
-
-        function validateFile(file, type) {
-            const errorElement = type === 'file' ? 
-                document.getElementById('fileError') : 
-                document.getElementById('compressError');
-                
-            const btnElement = type === 'file' ? 
-                document.getElementById('convertFileBtn') : 
-                document.getElementById('compressBtn');
-            
-            let isValid = true;
-            let errorMessage = '';
-            
-            if (type === 'file') {
-                const conversionType = document.getElementById('fileFormat').value;
-                const validExtensions = {
-                    'pdf-word': ['pdf'],
-                    'word-pdf': ['doc', 'docx'],
-                    'jpg-png': ['jpg', 'jpeg'],
-                    'png-jpg': ['png'],
-                    'image-pdf': ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'],
-                    'pdf-image': ['pdf']
-                };
-                
-                const extension = file.name.split('.').pop().toLowerCase();
-                isValid = validExtensions[conversionType].includes(extension);
-                errorMessage = `Invalid file type for selected conversion. Expected: ${validExtensions[conversionType].join(', ')}`;
-            } else if (type === 'compress') {
-                const compressType = document.getElementById('compressType').value;
-                if (compressType === 'image' && !file.type.startsWith('image/')) {
-                    isValid = false;
-                    errorMessage = 'Please select an image file for image compression';
-                }
-            }
-            
-            if (!isValid) {
-                errorElement.textContent = errorMessage;
-                errorElement.style.display = 'block';
-                btnElement.disabled = true;
-            } else {
-                errorElement.style.display = 'none';
-            }
-        }
-
-        function getProgressMessage(progress) {
-            if (progress < 30) return 'Starting process...';
-            if (progress < 60) return 'Processing file...';
-            if (progress < 90) return 'Finalizing conversion...';
-            return 'Almost done...';
-        }
-
-        // Initialize compression type change
-        document.getElementById('compressType').addEventListener('change', function() {
-            document.getElementById('compressInfo').textContent = '';
-            document.getElementById('compressPreview').innerHTML = '';
-            document.getElementById('compressBtn').disabled = true;
-            document.getElementById('downloadCompressedBtn').style.display = 'none';
-            document.getElementById('compressionInfo').style.display = 'none';
-            document.getElementById('compressError').style.display = 'none';
-            
-            if (this.value === 'image') {
-                document.getElementById('imageOptions').style.display = 'block';
-            } else {
-                document.getElementById('imageOptions').style.display = 'none';
-            }
-        });
-    </script>
+    <script src="js/main.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </body>
 </html>
