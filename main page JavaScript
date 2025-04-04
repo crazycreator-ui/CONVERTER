@@ -1,0 +1,217 @@
+// Main page functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // DOM Elements
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const toolsFilter = document.getElementById('tools-filter');
+  const toolCards = document.querySelectorAll('.tool-card');
+  const searchInput = document.getElementById('search-tools');
+  const themeToggle = document.getElementById('theme-toggle');
+  const testimonialSlider = document.querySelector('.testimonial-slider');
+  const testimonials = document.querySelectorAll('.testimonial-item');
+  const prevBtn = document.getElementById('testimonial-prev');
+  const nextBtn = document.getElementById('testimonial-next');
+  
+  // Variables
+  let currentTestimonial = 0;
+  
+  // Mobile menu toggle
+  mobileMenuBtn.addEventListener('click', function() {
+    mobileMenu.classList.toggle('active');
+    document.body.classList.toggle('menu-open');
+    
+    // Toggle aria-expanded attribute
+    const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+    mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+  });
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (mobileMenu.classList.contains('active') && 
+        !mobileMenu.contains(e.target) && 
+        !mobileMenuBtn.contains(e.target)) {
+      mobileMenu.classList.remove('active');
+      document.body.classList.remove('menu-open');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  
+  // Filter tools by category
+  if (toolsFilter) {
+    toolsFilter.addEventListener('click', function(e) {
+      if (e.target.classList.contains('filter-btn')) {
+        // Update active state
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        e.target.classList.add('active');
+        
+        const category = e.target.getAttribute('data-filter');
+        
+        // Filter the tool cards
+        toolCards.forEach(card => {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+    });
+  }
+  
+  // Search functionality
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      toolCards.forEach(card => {
+        const toolName = card.querySelector('h3').textContent.toLowerCase();
+        const toolDesc = card.querySelector('p').textContent.toLowerCase();
+        
+        if (toolName.includes(searchTerm) || toolDesc.includes(searchTerm)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  }
+  
+  // Theme toggle functionality
+  if (themeToggle) {
+    // Check for saved theme preference or use OS preference
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      themeToggle.checked = true;
+    }
+    
+    themeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+  }
+  
+  // Testimonial slider
+  if (testimonialSlider) {
+    function showTestimonial(index) {
+      testimonials.forEach((testimonial, i) => {
+        testimonial.style.transform = `translateX(${100 * (i - index)}%)`;
+      });
+      currentTestimonial = index;
+    }
+    
+    // Initialize testimonial positions
+    showTestimonial(0);
+    
+    // Prev/Next buttons
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', function() {
+        if (currentTestimonial > 0) {
+          showTestimonial(currentTestimonial - 1);
+        } else {
+          showTestimonial(testimonials.length - 1);
+        }
+      });
+      
+      nextBtn.addEventListener('click', function() {
+        if (currentTestimonial < testimonials.length - 1) {
+          showTestimonial(currentTestimonial + 1);
+        } else {
+          showTestimonial(0);
+        }
+      });
+    }
+    
+    // Auto-rotate testimonials
+    let testimonialInterval = setInterval(() => {
+      if (currentTestimonial < testimonials.length - 1) {
+        showTestimonial(currentTestimonial + 1);
+      } else {
+        showTestimonial(0);
+      }
+    }, 5000);
+    
+    // Pause auto-rotation on hover
+    testimonialSlider.addEventListener('mouseenter', () => {
+      clearInterval(testimonialInterval);
+    });
+    
+    testimonialSlider.addEventListener('mouseleave', () => {
+      testimonialInterval = setInterval(() => {
+        if (currentTestimonial < testimonials.length - 1) {
+          showTestimonial(currentTestimonial + 1);
+        } else {
+          showTestimonial(0);
+        }
+      }, 5000);
+    });
+  }
+  
+  // Tool cards hover effect
+  toolCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+      this.classList.add('hover');
+    });
+    
+    card.addEventListener('mouseleave', function() {
+      this.classList.remove('hover');
+    });
+  });
+  
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        // Close mobile menu if open
+        if (mobileMenu.classList.contains('active')) {
+          mobileMenu.classList.remove('active');
+          document.body.classList.remove('menu-open');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+  });
+  
+  // Lazy loading images
+  if ('IntersectionObserver' in window) {
+    const imgObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    });
+    
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imgObserver.observe(img);
+    });
+  } else {
+    // Fallback for browsers without IntersectionObserver
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = img.dataset.src;
+    });
+  }
+});
