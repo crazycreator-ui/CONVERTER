@@ -1,0 +1,218 @@
+// Tool page functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // DOM Elements
+  const fileUploadArea = document.getElementById('file-upload-area');
+  const fileInput = document.getElementById('file-input');
+  const uploadBtn = document.getElementById('upload-btn');
+  const fileNameDisplay = document.getElementById('file-name');
+  const processBtn = document.getElementById('process-btn');
+  const resultSection = document.getElementById('result-section');
+  const previewContainer = document.getElementById('file-preview');
+  const downloadAllBtn = document.getElementById('download-all-btn');
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  
+  // Variables
+  let uploadedFiles = [];
+  
+  // File Upload Area Events
+  fileUploadArea.addEventListener('click', function() {
+    fileInput.click();
+  });
+  
+  fileUploadArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    fileUploadArea.classList.add('drag-over');
+  });
+  
+  fileUploadArea.addEventListener('dragleave', function() {
+    fileUploadArea.classList.remove('drag-over');
+  });
+  
+  fileUploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    fileUploadArea.classList.remove('drag-over');
+    
+    if (e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
+    }
+  });
+  
+  fileInput.addEventListener('change', function() {
+    if (fileInput.files.length > 0) {
+      handleFiles(fileInput.files);
+    }
+  });
+  
+  uploadBtn.addEventListener('click', function() {
+    fileInput.click();
+  });
+  
+  // Process the files
+  processBtn.addEventListener('click', function() {
+    // Simulate processing for demo purposes
+    resultSection.classList.add('active');
+    processBtn.disabled = true;
+    
+    // Simulate loading state
+    processBtn.textContent = 'Processing...';
+    
+    setTimeout(function() {
+      displayFilePreview();
+      processBtn.textContent = 'Process Files';
+      processBtn.disabled = false;
+      
+      // Scroll to results
+      resultSection.scrollIntoView({ behavior: 'smooth' });
+    }, 2000);
+  });
+  
+  // FAQ accordion functionality
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', function() {
+      // Toggle the active class on the question
+      this.classList.toggle('active');
+      
+      // Toggle the display of the answer
+      const answer = this.nextElementSibling;
+      answer.classList.toggle('active');
+    });
+  });
+  
+  // Handle file selection
+  function handleFiles(files) {
+    uploadedFiles = Array.from(files);
+    
+    // Update UI
+    if (uploadedFiles.length > 0) {
+      fileNameDisplay.textContent = uploadedFiles.length > 1 
+        ? `${uploadedFiles.length} files selected` 
+        : uploadedFiles[0].name;
+      
+      fileUploadArea.classList.add('has-files');
+      processBtn.disabled = false;
+    } else {
+      fileNameDisplay.textContent = 'No file selected';
+      fileUploadArea.classList.remove('has-files');
+      processBtn.disabled = true;
+    }
+  }
+  
+  // Display file preview
+  function displayFilePreview() {
+    previewContainer.innerHTML = '';
+    
+    uploadedFiles.forEach((file, index) => {
+      const previewItem = document.createElement('div');
+      previewItem.className = 'preview-item';
+      
+      // Create preview content based on file type
+      let previewContent = '';
+      
+      if (file.type.startsWith('image/')) {
+        const imgUrl = URL.createObjectURL(file);
+        previewContent = `
+          <img src="${imgUrl}" alt="${file.name}">
+          <p>${file.name}</p>
+        `;
+      } else if (file.type === 'application/pdf') {
+        previewContent = `
+          <i class="fas fa-file-pdf" style="font-size: 3rem; color: #e74c3c;"></i>
+          <p>${file.name}</p>
+        `;
+      } else {
+        previewContent = `
+          <i class="fas fa-file" style="font-size: 3rem; color: #3498db;"></i>
+          <p>${file.name}</p>
+        `;
+      }
+      
+      previewItem.innerHTML = `
+        ${previewContent}
+        <button class="download-btn">
+          <i class="fas fa-download"></i> Download
+        </button>
+      `;
+      
+      previewContainer.appendChild(previewItem);
+    });
+    
+    // Show the download all button if multiple files
+    if (uploadedFiles.length > 1) {
+      downloadAllBtn.style.display = 'inline-flex';
+    } else {
+      downloadAllBtn.style.display = 'none';
+    }
+  }
+  
+  // Download button functionality (simulation)
+  previewContainer.addEventListener('click', function(e) {
+    if (e.target.classList.contains('download-btn') || e.target.closest('.download-btn')) {
+      // Simulate download (in a real app, this would actually download the file)
+      alert('File download started');
+    }
+  });
+  
+  downloadAllBtn.addEventListener('click', function() {
+    // Simulate download all files (in a real app, this would actually download all files)
+    alert('All files download started');
+  });
+});
+
+// Tool-specific functionality - Example for PDF Compressor
+// This would be customized for each tool
+function initPdfCompressor() {
+  const compressionLevel = document.getElementById('compression-level');
+  const outputFormat = document.getElementById('output-format');
+  
+  // Update compression settings display
+  compressionLevel.addEventListener('change', function() {
+    updateCompressionInfo();
+  });
+  
+  outputFormat.addEventListener('change', function() {
+    updateCompressionInfo();
+  });
+  
+  function updateCompressionInfo() {
+    const level = compressionLevel.value;
+    const format = outputFormat.value;
+    const infoElement = document.getElementById('compression-info');
+    
+    // Example info based on settings
+    let qualityInfo = '';
+    let sizeReduction = '';
+    
+    switch(level) {
+      case 'low':
+        qualityInfo = 'Minimum quality loss';
+        sizeReduction = '20-30%';
+        break;
+      case 'medium':
+        qualityInfo = 'Balanced quality';
+        sizeReduction = '40-60%';
+        break;
+      case 'high':
+        qualityInfo = 'Some quality loss';
+        sizeReduction = '60-80%';
+        break;
+      case 'maximum':
+        qualityInfo = 'Maximum compression';
+        sizeReduction = '80-90%';
+        break;
+    }
+    
+    infoElement.innerHTML = `
+      <p><strong>Expected File Size Reduction:</strong> ${sizeReduction}</p>
+      <p><strong>Output Quality:</strong> ${qualityInfo}</p>
+      <p><strong>Output Format:</strong> ${format.toUpperCase()}</p>
+    `;
+  }
+  
+  // Initialize with default values
+  updateCompressionInfo();
+}
+
+// Initialize specific tool if present
+if (document.getElementById('pdf-compressor-tool')) {
+  initPdfCompressor();
+}
